@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 using SimpleDotNet9WebApi.Interfaces;
-using SimpleDotNet9WebApi.Middlewares;
+using SimpleDotNet9WebApi.Middleware;
 using SimpleDotNet9WebApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +20,7 @@ builder.Services.AddControllers().AddJsonOptions(opt =>
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpClient<IExternalApiClient, ExternalApiClient>(client =>
     {
-        client.BaseAddress = new Uri("https://jsonplaceholder.typicode.com/");
+        client.BaseAddress = new Uri("http://localhost:9080/students-api/v1/");
     })
     .AddHttpMessageHandler<HttpClientLoggingHandler>();
 builder.Services.AddMemoryCache();
@@ -29,6 +29,7 @@ builder.Services.AddTransient<HttpClientLoggingHandler>();
 var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseMiddleware<RequestResponseLoggingMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 app.MapHealthChecks("/health");
 app.Run();

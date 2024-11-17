@@ -1,19 +1,24 @@
 using Microsoft.AspNetCore.Mvc;
-using SimpleDotNet9WebApi.Services;
-using System.Threading.Tasks;
 using SimpleDotNet9WebApi.Interfaces;
+using SimpleDotNet9WebApi.Models;
 
-namespace SimpleDotNet9WebApi.Controllers
+namespace SimpleDotNet9WebApi.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class ExternalApiController(IExternalApiClient externalApiClient) : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class ExternalApiController(IExternalApiClient externalApiClient) : ControllerBase
+    [HttpGet("data/{id}")]
+    public async Task<IActionResult> GetExternalData([FromRoute] string id)
     {
-        [HttpGet("data")]
-        public async Task<IActionResult> GetExternalData()
-        {
-            var data = await externalApiClient.GetExternalDataAsync("/get/1");
-            return Ok(data);
-        }
+        var (statusCode, content) = await externalApiClient.GetExternalDataAsync(id);
+        return StatusCode(statusCode, content);
+    }
+
+    [HttpPost("data")]
+    public async Task<IActionResult> GetExternalDataPost([FromBody] Student student)
+    {
+        var (statusCode, content) = await externalApiClient.GetExternalDataPostAsync(student);
+        return StatusCode(statusCode, content);
     }
 }
