@@ -1,5 +1,3 @@
-using System.Net;
-using System.Text;
 using SimpleDotNet9WebApi.Exceptions;
 using SimpleDotNet9WebApi.Interfaces;
 using SimpleDotNet9WebApi.Models;

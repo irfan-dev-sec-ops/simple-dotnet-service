@@ -1,4 +1,3 @@
-using System.Net;
 using SimpleDotNet9WebApi.Models;
 
 namespace SimpleDotNet9WebApi.Exceptions;
